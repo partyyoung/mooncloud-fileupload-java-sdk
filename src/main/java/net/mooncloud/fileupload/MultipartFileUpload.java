@@ -21,8 +21,9 @@ import com.sun.tools.javac.util.Assert;
 
 public class MultipartFileUpload {
 
-	private static final String URL = "http://127.0.0.1:8080/file/upload";
-	private static final String URL2PATH = "http://127.0.0.1:8080/file/upload2path";
+	private static final String HOST = "172.16.1.78:2121";
+	private static final String URL = "http://" + HOST + "/file/upload";
+	private static final String URL2PATH = "http://" + HOST + "/file/upload2path";
 
 	/**
 	 * @param filePath
