@@ -1,5 +1,5 @@
-# mooncloud-fileupload-java-sdk
-mooncloud-fileupload-java-sdk
+# mooncloud-fileupload-sdk
+mooncloud-fileupload-sdk
 
 ## java
 MultipartEntityBuilder
