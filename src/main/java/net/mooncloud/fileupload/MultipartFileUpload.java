@@ -21,9 +21,10 @@ import com.sun.tools.javac.util.Assert;
 
 public class MultipartFileUpload {
 
-	private static final String HOST = "127.0.0.1:8080";// "172.16.1.78:2121";
+	private static final String HOST = "172.16.1.78:2121"; //"127.0.0.1:8080";// 
 	private static final String URL = "http://" + HOST + "/file/upload";
 	private static final String URL2PATH = "http://" + HOST + "/file/upload2path";
+	private static final String URL2HTTP = "http://" + HOST + "/file/upload2http";
 
 	/**
 	 * @param filePath
@@ -41,7 +42,7 @@ public class MultipartFileUpload {
 		multipartEntityBuilder.addPart("file", fileBody);
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
-		return _upload(reqEntity, URL);
+		return _upload(reqEntity, URL2HTTP);
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class MultipartFileUpload {
 		}
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
-		return _upload(reqEntity, URL2PATH);
+		return _upload(reqEntity, URL2HTTP);
 	}
 
 	private static Object _upload(final HttpEntity reqEntity, final String url) throws IOException {
@@ -103,6 +104,7 @@ public class MultipartFileUpload {
 
 	public static void main(String[] args) throws IOException {
 		String filePath = "src/main/java/net/mooncloud/fileupload/MultipartFileUpload.java";
-		upload(filePath, "/tmp/upload/");
+//		upload(filePath);
+		upload(filePath, "/static/img");
 	}
 }
