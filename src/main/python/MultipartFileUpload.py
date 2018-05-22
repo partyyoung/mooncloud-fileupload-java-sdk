@@ -7,8 +7,8 @@ files = {'file': ('MultipartFileUpload.java', open('src/main/java/net/mooncloud/
 
 res = requests.post(url, files=files)
 # 查看请求体是否符合要求，有具体接口可以直接用具体接口，成功则符合要求，此处主要是演示用
-print (res.request.body)
+# print (res.request.body)
 # 查看请求头
-print (res.request.headers)
+# print (res.request.headers)
 # 查看请求头
 print (res.text)
