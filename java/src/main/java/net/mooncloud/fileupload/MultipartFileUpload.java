@@ -21,10 +21,17 @@ import com.sun.tools.javac.util.Assert;
 
 public class MultipartFileUpload {
 
-	private static final String HOST = "127.0.0.1:8080";// "172.16.1.78:2121"; //
-	private static final String URL = "http://" + HOST + "/file/upload";
-	private static final String URL2PATH = "http://" + HOST + "/file/upload2path";
-	private static final String URL2HTTP = "http://" + HOST + "/file/upload2http";
+	public static String HOST = "127.0.0.1:8080";
+	private static String URL = "http://" + HOST + "/file/upload";
+	private static String URL2PATH = "http://" + HOST + "/file/upload2path";
+	private static String URL2HTTP = "http://" + HOST + "/file/upload2http";
+
+	public static void HOST(final String host) {
+		HOST = host;
+		URL = "http://" + HOST + "/file/upload";
+		URL2PATH = "http://" + HOST + "/file/upload2path";
+		URL2HTTP = "http://" + HOST + "/file/upload2http";
+	}
 
 	/**
 	 * @param filePath
@@ -127,11 +134,5 @@ public class MultipartFileUpload {
 			}
 		}
 		return responseMessage;
-	}
-
-	public static void main(String[] args) throws IOException {
-		String filePath = "src/main/java/net/mooncloud/fileupload/MultipartFileUpload.java";
-		// upload(filePath);
-		upload2http(filePath, "/static/img", false, false);
 	}
 }
