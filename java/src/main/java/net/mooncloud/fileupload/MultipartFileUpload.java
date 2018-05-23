@@ -21,7 +21,7 @@ import com.sun.tools.javac.util.Assert;
 
 public class MultipartFileUpload {
 
-	private static final String HOST = "172.16.1.78:2121"; //"127.0.0.1:8080";// 
+	private static final String HOST = "127.0.0.1:8080";// "172.16.1.78:2121"; //
 	private static final String URL = "http://" + HOST + "/file/upload";
 	private static final String URL2PATH = "http://" + HOST + "/file/upload2path";
 	private static final String URL2HTTP = "http://" + HOST + "/file/upload2http";
@@ -42,7 +42,7 @@ public class MultipartFileUpload {
 		multipartEntityBuilder.addPart("file", fileBody);
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
-		return _upload(reqEntity, URL2HTTP);
+		return _upload(reqEntity, URL);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class MultipartFileUpload {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Object upload(String filePath, String remotePath) throws IOException {
+	public static Object upload2path(String filePath, String remotePath) throws IOException {
 		// 1. 创建上传需要的元素类型
 		// 1.1 装载本地上传图片的文件
 		File file = new File(filePath);
@@ -63,6 +63,33 @@ public class MultipartFileUpload {
 		if (remotePath != null) {
 			multipartEntityBuilder.addPart("path", new StringBody(remotePath, ContentType.DEFAULT_TEXT));
 		}
+		HttpEntity reqEntity = multipartEntityBuilder.build();
+		System.out.println("打包数据完成");
+		return _upload(reqEntity, URL2PATH);
+	}
+
+	/**
+	 * @param filePath
+	 * @param remotePath
+	 * @return
+	 * @throws IOException
+	 */
+	public static Object upload2http(String filePath, String path, boolean rename, boolean overwrite)
+			throws IOException {
+		// 1. 创建上传需要的元素类型
+		// 1.1 装载本地上传图片的文件
+		File file = new File(filePath);
+		Assert.check(file.exists(), "文件 not exists");
+		FileBody fileBody = new FileBody(file);
+		// 2. 将所有需要上传元素打包成HttpEntity对象
+		MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+		multipartEntityBuilder.addPart("file", fileBody);
+		if (path != null) {
+			multipartEntityBuilder.addPart("path", new StringBody(path, ContentType.DEFAULT_TEXT));
+		}
+		multipartEntityBuilder.addPart("rename", new StringBody(String.valueOf(rename), ContentType.DEFAULT_TEXT));
+		multipartEntityBuilder.addPart("overwrite",
+				new StringBody(String.valueOf(overwrite), ContentType.DEFAULT_TEXT));
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
 		return _upload(reqEntity, URL2HTTP);
@@ -104,7 +131,7 @@ public class MultipartFileUpload {
 
 	public static void main(String[] args) throws IOException {
 		String filePath = "src/main/java/net/mooncloud/fileupload/MultipartFileUpload.java";
-//		upload(filePath);
-		upload(filePath, "/static/img");
+		// upload(filePath);
+		upload2http(filePath, "/static/img", false, false);
 	}
 }
