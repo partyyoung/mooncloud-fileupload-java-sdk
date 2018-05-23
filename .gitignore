@@ -49,3 +49,56 @@ logs
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+java/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+java/.mvn
+
+### STS ###
+java/.apt_generated
+java/.classpath
+java/.factorypath
+java/.project
+java/.settings
+java/.springBeans
+
+### IntelliJ IDEA ###
+java/.idea
+java/*.iws
+java/*.iml
+java/*.ipr
+
+### NetBeans ###
+java/nbproject/private/
+java/build/
+java/nbbuild/
+java/dist/
+java/nbdist/
+java/.nb-gradle/
+
+# Compiled class file
+java/*.class
+
+# Log file
+java/*.log
+java/log
+java/logs
+
+# BlueJ files
+java/*.ctxt
+
+# Mobile Tools for Java (J2ME)
+java/.mtj.tmp/
+
+# Package Files #
+java/*.jar
+java/*.war
+java/*.ear
+java/*.zip
+java/*.tar.gz
+java/*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+java/hs_err_pid*
