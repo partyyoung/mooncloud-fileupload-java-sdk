@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -49,7 +51,7 @@ public class MultipartFileUpload {
 		multipartEntityBuilder.addPart("file", fileBody);
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
-		return _upload(reqEntity, URL);
+		return _upload(reqEntity, URL, file.length());
 	}
 
 	/**
@@ -72,7 +74,7 @@ public class MultipartFileUpload {
 		}
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
-		return _upload(reqEntity, URL2PATH);
+		return _upload(reqEntity, URL2PATH, file.length());
 	}
 
 	/**
@@ -99,10 +101,13 @@ public class MultipartFileUpload {
 				new StringBody(String.valueOf(overwrite), ContentType.DEFAULT_TEXT));
 		HttpEntity reqEntity = multipartEntityBuilder.build();
 		System.out.println("打包数据完成");
-		return _upload(reqEntity, URL2HTTP);
+		return _upload(reqEntity, URL2HTTP, file.length());
 	}
 
-	private static Object _upload(final HttpEntity reqEntity, final String url) throws IOException {
+	private static Object _upload(final HttpEntity reqEntity, final String url, final long length) throws IOException {
+		Long start = System.currentTimeMillis();
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("start", start);
 		// 3. 创建HttpPost对象，用于包含信息发送post消息
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setEntity(reqEntity);
@@ -133,6 +138,11 @@ public class MultipartFileUpload {
 				response.close();
 			}
 		}
-		return responseMessage;
+		Long end = System.currentTimeMillis();
+		ret.put("length", length);
+		ret.put("end", end);
+		ret.put("taken", end - start);
+		ret.put("response", responseMessage);
+		return ret;
 	}
 }
