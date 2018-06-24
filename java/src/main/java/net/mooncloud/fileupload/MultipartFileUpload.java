@@ -18,21 +18,25 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.tools.javac.util.Assert;
 
 public class MultipartFileUpload {
 
+	private final static Logger LOGGER = LoggerFactory.getLogger(MultipartFileUpload.class);
+
 	public static String HOST = "127.0.0.1:8080";
-	private static String URL = "http://" + HOST + "/file/upload";
-	private static String URL2PATH = "http://" + HOST + "/file/upload2path";
-	private static String URL2HTTP = "http://" + HOST + "/file/upload2http";
+	private static String URL = "http://" + HOST + "/upload/oss/upload";
+	private static String URL2PATH = "http://" + HOST + "/upload/oss/upload2path";
+	private static String URL2HTTP = "http://" + HOST + "/upload/oss/upload2http";
 
 	public static void HOST(final String host) {
 		HOST = host;
-		URL = "http://" + HOST + "/file/upload";
-		URL2PATH = "http://" + HOST + "/file/upload2path";
-		URL2HTTP = "http://" + HOST + "/file/upload2http";
+		URL = "http://" + HOST + "/upload/oss/upload";
+		URL2PATH = "http://" + HOST + "/upload/oss/upload2path";
+		URL2HTTP = "http://" + HOST + "/upload/oss/upload2http";
 	}
 
 	/**
@@ -79,7 +83,9 @@ public class MultipartFileUpload {
 
 	/**
 	 * @param filePath
-	 * @param remotePath
+	 * @param path
+	 * @param rename
+	 * @param overwrite
 	 * @return
 	 * @throws IOException
 	 */
@@ -100,7 +106,7 @@ public class MultipartFileUpload {
 		multipartEntityBuilder.addPart("overwrite",
 				new StringBody(String.valueOf(overwrite), ContentType.DEFAULT_TEXT));
 		HttpEntity reqEntity = multipartEntityBuilder.build();
-		System.out.println("打包数据完成");
+		LOGGER.debug("打包数据完成");
 		return _upload(reqEntity, URL2HTTP, file.length());
 	}
 
@@ -111,16 +117,19 @@ public class MultipartFileUpload {
 		// 3. 创建HttpPost对象，用于包含信息发送post消息
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setEntity(reqEntity);
-		System.out.println("创建post请求并装载好打包数据");
+		LOGGER.debug("创建post请求并装载好打包数据");
+		// System.out.println("创建post请求并装载好打包数据");
 		// 4. 创建HttpClient对象，传入httpPost执行发送网络请求的动作
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = httpClient.execute(httpPost);
-		System.out.println("发送post请求并获取结果");
+		LOGGER.debug("发送post请求并获取结果");
+		// System.out.println("发送post请求并获取结果");
 		// 5. 获取返回的实体内容对象并解析内容
 		HttpEntity resultEntity = response.getEntity();
 		String responseMessage = "";
 		try {
-			System.out.println("开始解析结果");
+			LOGGER.debug("开始解析结果");
+			// System.out.println("开始解析结果");
 			if (resultEntity != null) {
 				InputStream is = resultEntity.getContent();
 				BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -130,7 +139,8 @@ public class MultipartFileUpload {
 					sb.append(line);
 				}
 				responseMessage = sb.toString();
-				System.out.println("解析完成，解析内容为" + responseMessage);
+				LOGGER.debug("解析完成，解析内容为" + responseMessage);
+				// System.out.println("解析完成，解析内容为" + responseMessage);
 			}
 			EntityUtils.consume(resultEntity);
 		} finally {
