@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<form id= "uploadForm">  
+		      <p >指定文件名： <input type="text" name="filename" value= ""/></p >  
+		      <p >上传文件： <input type="file" name="file" multiple="multiple"/></ p>  
+		      <input type="button" value="上传" onclick="doUpload()" />  
+		</form>  
+	</body>
+	<script src="../js/jquery-3.1.1.min.js"></script>
+	<script>
+		function doUpload() {  
+
+		    var formData = new FormData($( "#uploadForm" )[0]);
+		    formData.append("path", "/test2");
+		    formData.append("rename", false);
+		    formData.append("rename", false);
+
+		    $.ajax({  
+		        url: 'http://127.0.0.1:12121/upload/oss/upload2http' ,  
+		        type: 'POST',  
+		        data: formData,  
+		        async: false,  
+		        cache: false,  
+		        contentType: false,  
+		        processData: false,  
+		        success: function (data) {  
+		            console.log(data) 
+		        },  
+		        error: function (data) {  
+		            console.log(data)  
+		        }  
+		    });  
+		}  
+	</script>
+</html>
